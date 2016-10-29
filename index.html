@@ -1,0 +1,199 @@
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Single page template</title>
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
+	<link rel="stylesheet" href="themes/myTheme.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<!-- Loading Bootstrap -->
+	<link href="dist/css/vendor/bootstrap.min.css" rel="stylesheet">
+
+	<!-- Loading Flat UI -->
+	<link href="dist/css/flat-ui.css" rel="stylesheet">
+	<link href="docs/assets/css/demo.css" rel="stylesheet">
+
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<style type="text/css">
+	.page1{
+		background-image: url(img/clouds.gif);
+		background-size: cover;
+	}
+	.page-container{
+		background-color: #FFFAF0;
+	}
+	.no-corner{
+		border-radius: 0px !important;
+	}
+	.center{
+		margin: 0px auto;
+	}
+	.no-box-shadow{
+		-webkit-box-shadow: none !important;
+		-moz-box-shadow: none !important;
+		box-shadow: none !important;
+	}
+	.low-opacity{
+		opacity: .4;
+	}
+	.container-lg{
+		width: 90%;
+	}
+	.todo-search, .todo li.todo-done:after{
+		background-color: #E67E22;
+	}
+	.todo ul{
+		/*background-color: #;*/
+	}
+	.todo li.todo-done, .todo li.todo-done .todo-name{
+		color: #ffffff;
+	}
+	.todo li{
+		background-color: #ffffff;
+	}
+	</style>
+</head>
+
+<body>
+
+	<div data-role="page" data-title="" id="page1" class="page-container page1">
+		<!-- <div class="" data-role="header">
+		<span class="fui-home"></span>
+		<h1>My Company</h1>
+	</div> -->
+	<div data-role="content" class="page-content container-lg center" id="page1-content">
+		<div class="center">
+			<div class="low-opacity">
+				<input data-clear-btn="true" Placeholder="username" type="text" name="txt-email" id="txt-email">
+				<input data-clear-btn="true" Placeholder="password" type="password" name="txt-password" id="txt-password">
+			</div>
+			<a href="#page3" class="center ui-btn no-box-shadow">Submit</a>
+		</div><!--end form div-->
+	</div><!--end content div-->
+
+</div>
+<!--end login page-->
+<div data-role="page" data-title="" id="page2" class="page-container page2">
+	<div class="" data-role="header">
+		<a href="index.html" class="ui-btn ui-shadow ui-corner-all  ui-btn-icon-notext"><span class="fui-home"></span></a>
+		<h1>My Company</h1>
+	</div>
+	<div data-role="content" class="container-lg center" id="page2-content">
+		<div class="todo">
+			<div class="todo-search">
+				<input class="todo-search-field" type="search" value="" placeholder="Search">
+			</div>
+			<ul>
+
+				<li>
+					<a href="">
+						<div class="todo-icon fui-list"></div>
+						<div class="todo-content">
+							<h4 class="todo-name">
+								Chat with <strong>V.Kudinov</strong>
+							</h4>
+							Skype conference an 9 am
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<div class="todo-icon fui-eye"></div>
+						<div class="todo-content">
+							<h4 class="todo-name">
+								Watch <strong>Iron Man</strong>
+							</h4>
+							1998 Broadway
+						</div>
+					</a>
+				</li>
+				<li>
+					<a href="">
+						<div class="todo-icon fui-time"></div>
+						<div class="todo-content">
+							<h4 class="todo-name">
+								Fix bug on a <strong>Website</strong>
+							</h4>
+							As soon as possible
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div><!--end content div-->
+
+</div>
+<!--end page 2-->
+<div  id="page3" class="page-container page3" data-role="page">
+	<div class="" data-role="header">
+		<h1>Dynamic Page</h1>
+	</div>
+	<div class="" data-role="content">
+		<a href="javascript:addPages()" id="button1" data-role="button">Add Pages</a>
+		<ul id="list1">
+
+		</ul>
+	</div>
+</div>
+<!-- end dynamic page -->
+
+<script type="text/javascript">
+$(document).bind("mobileinit", function(){
+	$.mobile.defaultPageTransition = "fade";
+	$.mobile.minScrollBack = "150";
+	$.mobile.activeBtnClass = "active-button";
+	// $.mobile.ajaxEnabled= false;
+	// $.mobile.ns = "demo"; not applying now as need to change the css and theme file also
+	$.mobile.pageLoadErrorMessage = "Errorrrrrrr";
+	$.mobile.page.prototype.options.backBtnText = "Previous";
+	$.mobile.dialog.prototype.options.closeBtnText = "close it";
+	$.mobile.touchOverflowEnabled = true;
+	$.mobile.listview.prototype.filter = true; //enables filter
+	$.mobile.selectmenu.prototype.iconshadow = false;
+	$.mobile.changePage("demo.html");
+
+
+	$('#page2').on('pageshow', function () {
+		setTimeout(function () {
+			$('#about').popup('open', {
+				transition: 'pop'
+			});
+		}, 1000);
+	});
+
+	setTimeout(function () {
+		$(':mobile-pagecontainer').pagecontainer('change', '#page3', {
+			transition: 'flip',
+			changeHash: false,
+			reverse: true,
+			showLoadMsg: true
+		});
+	}, 1000);
+
+ });
+
+$(document).on('pageshow','.page-container', function(e,data){
+	$('.page-content').css('margin-top',($(window).height() - $('[data-role=header]').height() - $('[data-role=footer]').height() - $('.page-content').outerHeight())/2);
+});
+
+
+function addPages(){
+	for (var i = 1; i < 5; i++) {
+		var page = $("div").jqmData("role", "page").attr("id","page" +i);
+		//header
+		$("<div>").attr("data-role", "header").append($("<h1>").html("content for page " +i))
+		$("body").append(page);
+			$("<li>").append($("<a>").attr("href", "#page" +i).html("go to the page" + i))
+			.appendTo("#list1");
+	}
+
+	$("#button1").hide();
+}
+
+
+</script>
+<script src="js/jquery.mobile-1.4.5.min.js"></script>
+
+</body>
+</html>
